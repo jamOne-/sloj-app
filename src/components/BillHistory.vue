@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Bill from './Bill.vue';
+import Bill from './Bill.vue'
 
 export default {
   data() {

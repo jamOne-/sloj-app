@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import AppHeader from './components/app/AppHeader.vue';
-import AppContent from './components/app/AppContent.vue';
-import AppFooter from './components/app/AppFooter.vue';
+import AppHeader from './components/app/AppHeader.vue'
+import AppContent from './components/app/AppContent.vue'
+import AppFooter from './components/app/AppFooter.vue'
 
 export default {
   name: 'app',
