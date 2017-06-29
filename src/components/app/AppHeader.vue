@@ -5,9 +5,9 @@
         <div class="logo">ROZLICZ SŁOJA</div>
 
         <nav>
-          <a class="nav-item" href="#">Główna</a>
-          <a class="nav-item" href="#">Rachunki</a>
-          <a class="nav-item" href="#">Użytkownicy</a>
+          <router-link to="/" class="nav-item">Główna</router-link>
+          <router-link to="/bills" class="nav-item">Rachunki</router-link>
+          <router-link to="/" class="nav-item">Użytkownicy</router-link>
         </nav>
       </div>
     </div>

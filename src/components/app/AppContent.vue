@@ -1,25 +1,17 @@
 <template>
   <main>
     <div class="container">
-      <div class="summary">
-        <summary-card></summary-card>
-        <summary-card></summary-card>
-        <summary-card></summary-card>
-      </div>
-
-      <div class="history-wrapper">
-        <bill-history></bill-history>
-      </div>
+      <router-view></router-view>
     </div>
   </main>
 </template>
 
 <script>
-import SummaryCard from './SummaryCard.vue';
+import MainPage from '../pages/MainPage.vue';
 
 export default {
   components: {
-    SummaryCard
+    MainPage
   }
 }
 </script>
