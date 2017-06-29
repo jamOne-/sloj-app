@@ -1,20 +1,40 @@
 <template>
-  <div class="container">
-  </div>
+  <main>
+    <div class="container">
+      <div class="summary">
+        <summary-card></summary-card>
+        <summary-card></summary-card>
+        <summary-card></summary-card>
+      </div>
+
+      <div class="history-wrapper">
+        <bill-history></bill-history>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script>
-export default {
+import SummaryCard from './SummaryCard.vue';
 
+export default {
+  components: {
+    SummaryCard
+  }
 }
 </script>
 
 <style scoped>
-  .container {
-    width: 1200px;
-    height: calc(100vh - 60px - 100px);
-    margin: 0 auto;
-    padding: 30px 0;
-    background: #ffffff;
+  main {
+    width: 100%;
+    min-height: calc(100vh - 80px - 60px);
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .summary {
+    display: flex;
+    justify-content: space-between;
   }
 </style>

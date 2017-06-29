@@ -1,48 +1,43 @@
 <template>
   <header>
     <div class="container">
-      <div class="logo">SŁÓJ-APP</div>
+      <div class="header">
+        <div class="logo">ROZLICZ SŁOJA</div>
 
-      <nav>
-        <a class="nav-item" href="#">Główna</a>
-        <a class="nav-item" href="#">Historia</a>
-        <a class="nav-item" href="#">Użytkownicy</a>
-      </nav>
+        <nav>
+          <a class="nav-item" href="#">Główna</a>
+          <a class="nav-item" href="#">Rachunki</a>
+          <a class="nav-item" href="#">Użytkownicy</a>
+        </nav>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      user: 'Dominik'
-    }
-  }
+
 }
 </script>
 
 <style scoped>
   header {
-    width: 100%;
-    height: 60px;
-    background: #2980b9;
+    height: 80px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+    display: flex;
+    justify-content: center;
   }
 
-  .container {
-    width: 1200px;
+  .header {
     height: 100%;
-    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
   .logo {
-    color: white;
-    font-weight: bold;
-    font-size: 30px;
-    text-transform: uppercase;
+    font-size: 26px;
+    font-weight: 300;
   }
 
   nav {
@@ -51,16 +46,20 @@ export default {
   }
 
   .nav-item {
-    padding: 0 20px;
     height: 100%;
     display: flex;
     align-items: center;
-    color: white;
+    margin-left: 30px;
+    outline: none;
     text-decoration: none;
-    transition: all 200ms ease;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: color 200ms ease;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   .nav-item:hover {
-    background-color: #3498db;
+    color: #2c3e50;
+    border-bottom: 1px solid #2c3e50;
   }
 </style>

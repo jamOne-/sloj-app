@@ -1,5 +1,12 @@
 <template>
   <footer>
+    <div class="container">
+      <div class="footer">
+        <div class="author">
+          <p>by @jamone</p>
+        </div>
+      </div>
+    </div>
   </footer>
 </template>
 
@@ -12,7 +19,17 @@ export default {
 <style scoped>
   footer {
     width: 100%;
-    height: 100px;
-    background: #34495e;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.16);
   }
 </style>
