@@ -49,6 +49,15 @@ export default {
     justify-content: space-between;
   }
 
+  .empty-entries {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+    font-weight: 300;
+  }
+
   .entries {
     padding: 10px;
   }

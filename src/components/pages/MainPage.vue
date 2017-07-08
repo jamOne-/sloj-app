@@ -7,15 +7,27 @@
         :summary="summary">
       </summary-card>
     </div>
+
+    <div class="new-bill-container">
+      <new-bill @addBill="addBill($event)"></new-bill>
+    </div>
+
+    <!--<div class="history-container">
+      <bill-history :bills="bills"></bill-history>
+    </div>-->
   </div>
 </template>
 
 <script>
 import SummaryCard from '../SummaryCard.vue';
+import NewBill from '../NewBill.vue';
+import BillHistory from '../BillHistory.vue';
 
 export default {
   components: {
-    SummaryCard
+    SummaryCard,
+    NewBill,
+    BillHistory
   },
   data() {
     return {
@@ -58,6 +70,10 @@ export default {
     }
   },
   methods: {
+    addBill(bill) {
+      this.bills.push(bill);
+    },
+
     getSummaries() {
       const summaries = {};
 
@@ -86,5 +102,11 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+  }
+
+  .new-bill-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
   }
 </style>

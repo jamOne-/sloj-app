@@ -1,24 +1,20 @@
 <template>
-  <div class="container">
-    <!--<bill v-for="bill in bills"></bill>-->
+  <div>
+    <div class="bill" v-for="(bill, i) in bills" :key="i">
+    </div>
   </div>
 </template>
 
 <script>
-import Bill from './Bill.vue'
-
 export default {
-  data() {
-    return {
-      bills: [1,2,3]
-    };
-  },
-  components: {
-    Bill
-  }
+  props: ['bills']
 }
 </script>
 
 <style scoped>
-  
+  .bill {
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+  }
 </style>
