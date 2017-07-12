@@ -9,35 +9,68 @@
     </div>
 
     <div class="new-bill-container">
-      <bill :newBill="true" @addBill="addBill($event)"></bill>
+       <new-bill @addBill="addBill($event)"></new-bill> 
     </div>
 
     <div class="history-container">
-      <bill-history :bills="bills"></bill-history>
+       <bill-history :bills="bills"></bill-history> 
     </div>
   </div>
 </template>
 
 <script>
 import SummaryCard from '../SummaryCard.vue';
-import Bill from '../Bill.vue';
+import NewBill from '../NewBill.vue';
 import BillHistory from '../BillHistory.vue';
 
 export default {
   components: {
     SummaryCard,
-    Bill,
+    NewBill,
     BillHistory
   },
   data() {
     return {
       bills: [
         {
+          id: 0,
+          deleted: false,
           comment: 'Za jakieś duperele',
-          entries: [{ from: 'Werner', to: 'Dominik', amount: 12 }, { from: 'Werner', to: 'Rafał', amount: 17.82 }, { from: 'Dominik', to: 'Rafał', amount: 3 }]
-        }, {
+          from: 'Werner',
+          to: 'Dominik',
+          amount: 12
+        },
+        {
+          id: 1,
+          deleted: false,
+          comment: 'Za jakieś duperele',
+          from: 'Werner',
+          to: 'Rafał',
+          amount: 17.82
+        },
+        {
+          id: 2,
+          deleted: false,
+          comment: 'Za jakieś duperele',
+          from: 'Dominik',
+          to: 'Rafał',
+          amount: 3
+        },
+        {
+          id: 3,
+          deleted: false,
           comment: 'Dominik dłużnik',
-          entries: [{ from: 'Dominik', to: 'Rafał', amount: 19.90 }, { from: 'Dominik', to: 'Werner', amount: 10 }]
+          from: 'Dominik',
+          to: 'Rafał',
+          amount: 19.90
+        },
+        {
+          id: 4,
+          deleted: false,
+          comment: 'Dominik dłużnik',
+          from: 'Dominik',
+          to: 'Werner',
+          amount: 10
         }
       ]
     };
@@ -71,24 +104,24 @@ export default {
   },
   methods: {
     addBill(bill) {
-      this.bills.push(bill);
+      bill.id = this.bills.length;
+      bill.deleted = false;
+      this.bills.unshift(bill);
     },
 
     getSummaries() {
       const summaries = {};
 
-      this.bills.forEach(bill => {
-        bill.entries.forEach(entry => {
-          summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
-          summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
-          summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
-          summaries[entry.to][entry.from] = summaries[entry.to][entry.from] || 0;
+      this.bills.forEach(entry => {
+        summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
+        summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
+        summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
+        summaries[entry.to][entry.from] = summaries[entry.to][entry.from] || 0;
 
-          summaries[entry.from][entry.to] += entry.amount;
-          summaries[entry.from]._sum -= entry.amount;
-          summaries[entry.to][entry.from] -= entry.amount;
-          summaries[entry.to]._sum += entry.amount;
-        });
+        summaries[entry.from][entry.to] += entry.amount;
+        summaries[entry.from]._sum -= entry.amount;
+        summaries[entry.to][entry.from] -= entry.amount;
+        summaries[entry.to]._sum += entry.amount;
       });
 
       return summaries;
