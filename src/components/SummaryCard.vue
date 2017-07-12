@@ -4,7 +4,7 @@
       <span>{{ user }}:</span> <span :class="{ green: summary.sum > 0, red: summary.sum < 0 }">{{ balance }}</span>
     </div>
     <div class="empty-entries" v-if="!summary.entries.length">
-      <p>Nic tu nie ma, czysto :)</p>
+      <p>Nic tu nie ma, czyste konto :)</p>
     </div>
     <div class="entries" v-else>
       <div class="entry" v-for="(entry, i) in summary.entries" :key="i">

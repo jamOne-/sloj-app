@@ -9,24 +9,24 @@
     </div>
 
     <div class="new-bill-container">
-      <new-bill @addBill="addBill($event)"></new-bill>
+      <bill :newBill="true" @addBill="addBill($event)"></bill>
     </div>
 
-    <!--<div class="history-container">
+    <div class="history-container">
       <bill-history :bills="bills"></bill-history>
-    </div>-->
+    </div>
   </div>
 </template>
 
 <script>
 import SummaryCard from '../SummaryCard.vue';
-import NewBill from '../NewBill.vue';
+import Bill from '../Bill.vue';
 import BillHistory from '../BillHistory.vue';
 
 export default {
   components: {
     SummaryCard,
-    NewBill,
+    Bill,
     BillHistory
   },
   data() {
@@ -104,7 +104,8 @@ export default {
     flex-wrap: wrap;
   }
 
-  .new-bill-container {
+  .new-bill-container,
+  .history-container {
     padding: 20px 0;
     display: flex;
     justify-content: center;

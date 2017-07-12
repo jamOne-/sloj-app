@@ -1,20 +1,19 @@
 <template>
   <div>
-    <div class="bill" v-for="(bill, i) in bills" :key="i">
-    </div>
+    <bill class="bill" v-for="(bill, i) in bills" :key="i" :bill="bill"></bill>
   </div>
 </template>
 
 <script>
+import Bill from './Bill.vue'
+
 export default {
-  props: ['bills']
+  props: ['bills'],
+  components: {
+    Bill
+  }
 }
 </script>
 
 <style scoped>
-  .bill {
-    width: 100%;
-    height: 100px;
-    border: 1px solid black;
-  }
 </style>
