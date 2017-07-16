@@ -6,7 +6,6 @@
       <input type="text" placeholder="Kto" v-model="bill.from" :class="{ filled: bill.from }">
       <div class="entry-arrow">&rarr;</div>
       <input type="text" placeholder="Komu" v-model="bill.to" :class="{ filled: bill.to }">
-      <!-- <input class="amount-input" type="text" placeholder="Ile hajsu" v-model="bill.amount" :class="{ filled: bill.amount }"> -->
       <amount-input placeholder="Ile hajsu" currency="zł" v-model="bill.amount"></amount-input>
     </div>
 
