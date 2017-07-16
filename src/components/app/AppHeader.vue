@@ -56,6 +56,7 @@ export default {
     font-size: 14px;
     transition: color 200ms ease;
     color: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid transparent;
   }
 
   .nav-item:hover {
