@@ -53,7 +53,7 @@ export default {
     outline: none;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 15px;
     transition: color 200ms ease;
     color: rgba(0, 0, 0, 0.6);
     border-bottom: 1px solid transparent;

@@ -66,7 +66,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 40px 1fr 1fr;
     grid-template-rows: 100%;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
   }
 

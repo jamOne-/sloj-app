@@ -13,7 +13,7 @@
     </div>
 
     <div class="history-container">
-       <bill-history :bills="bills"></bill-history> 
+       <bill-history :bills="bills" @toggleDeletion="toggleDeletion($event)"></bill-history> 
     </div>
   </div>
 </template>
@@ -125,6 +125,11 @@ export default {
       });
 
       return summaries;
+    },
+
+    toggleDeletion(bill) {
+      // todo: api call
+      bill.deleted = !bill.deleted;
     }
   }
 }
