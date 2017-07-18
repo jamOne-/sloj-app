@@ -111,10 +111,7 @@ export default {
 
     getSummaries() {
       const summaries = {};
-
-      this.bills.forEach(entry => {
-        if (entry.deleted) return;
-
+      const calculateEntry = (entry) => {
         summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
         summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
         summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
@@ -124,6 +121,21 @@ export default {
         summaries[entry.from]._sum -= entry.amount;
         summaries[entry.to][entry.from] -= entry.amount;
         summaries[entry.to]._sum += entry.amount;
+      };
+
+      this.bills.forEach(entry => {
+        if (entry.deleted) return;
+
+        const allUsers = ['Werner', 'Dominik', 'Rafał'];
+        const entries = entry.from != 'Słój' ?
+          [entry] :
+          allUsers.map(user => ({
+            from: user,
+            to: entry.to,
+            amount: entry.amount / 3
+          }));
+
+        entries.forEach(calculateEntry);
       });
 
       return summaries;
