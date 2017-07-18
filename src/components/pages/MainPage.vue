@@ -113,6 +113,8 @@ export default {
       const summaries = {};
 
       this.bills.forEach(entry => {
+        if (entry.deleted) return;
+
         summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
         summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
         summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
