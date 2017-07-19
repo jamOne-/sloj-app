@@ -5,7 +5,6 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {
@@ -39,8 +38,15 @@ module.exports = {
     }
   },
   devServer: {
+    contentBase: "./dist",
     historyApiFallback: true,
-    noInfo: true
+    // noInfo: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false
+      }
+    }
   },
   performance: {
     hints: false
