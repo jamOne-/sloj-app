@@ -1,8 +1,13 @@
 const express = require('express');
+const serveStatic = require('serve-static');
+const api = require('./routes/api');
+
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-app.use(express.static('dist'));
+app.use(serveStatic('dist'));
+app.use('/api', api);
 
-app.listen(3000, function () {
-  console.log('App listening on port 3000!');
-})
+app.listen(PORT, () => {
+  console.log(`App listening on port ${ PORT }!`);
+});
