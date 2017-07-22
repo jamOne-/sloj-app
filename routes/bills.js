@@ -10,7 +10,7 @@ const billsRouter = db => {
 
   router.get('/', async function (req, res) {
     try {
-      const bills = await billsCollection.find({ }).sort({ creationDate: -1 }).toArray();
+      const bills = await billsCollection.find({}).sort({ creationDate: -1 }).toArray();
       res.send(bills);
     }
 
@@ -21,24 +21,9 @@ const billsRouter = db => {
   });
 
   router.post('/', async function (req, res) {
-    const bill = req.body;
-
     try {
-      if (possibleFroms.includes(bill.from) &&
-          possibleTos.includes(bill.to) &&
-          typeof bill.amount == 'number' &&
-          bill.amount > 0
-      ) {
-        const { from, to, amount, comment } = bill;
-        const deleted = false;
-        const creationDate = new Date();
-
-        const insertResult = await billsCollection.insertOne({ from, to, amount, comment, deleted, creationDate });
-        res.send(insertResult.ops[0]);
-      }
-
-      else
-        res.sendStatus(400);
+      const bill = await insertBill(billsCollection, req.body);
+      res.send(bill);
     }
 
     catch (e) {
@@ -67,3 +52,21 @@ const billsRouter = db => {
 }
 
 module.exports = billsRouter;
+
+async function insertBill(bills, bill) {
+  if (possibleFroms.includes(bill.from) &&
+      possibleTos.includes(bill.to) &&
+      typeof bill.amount == 'number' &&
+      bill.amount > 0
+  ) {
+    const { from, to, amount, comment } = bill;
+    const deleted = false;
+    const creationDate = new Date();
+
+    return await billsCollection.insertOne({ from, to, amount, comment, deleted, creationDate })
+      .then(result => result.ops[0]);
+  }
+
+  else
+    throw new Error('Invalid bill object');
+}
