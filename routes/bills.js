@@ -5,7 +5,7 @@ const router = express.Router();
 const possibleTos = ['Werner', 'Dominik', 'Rafał'];
 const possibleFroms = [...possibleTos, 'Słój'];
 
-const billsRouter = (db) => {
+const billsRouter = db => {
   const billsCollection = db.collection('bills');
 
   router.get('/', async function (req, res) {
