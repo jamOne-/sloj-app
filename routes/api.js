@@ -1,8 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const billsRouter = require('./bills');
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017/sloj-app';
 
-router.use('/bills', billsRouter);
+MongoClient.connect(url, (err, db) => {
+  if (err) throw new Error(err);
+  
+  const billsRouter = require('./bills')(db);
+  
+  router.use('/bills', billsRouter);
+});
 
 module.exports = router;
