@@ -10,13 +10,11 @@ const isLoggedIn = require('./auth/middlewares').isLoggedIn;
 const isLoggedInApi = require('./auth/middlewares').isLoggedInApi;
 const api = require('./api/api');
 const MongoClient = require('mongodb').MongoClient;
-const configSessionSecret = require('./config/auth').sessionSecret;
-const configConnectionString = require('./config/database').connectionString;
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const connectionString = process.env.MONGODB_URI || configConnectionString;
-const sessionSecret = process.env.SESSION_SECRET || configSessionSecret;
+const connectionString = process.env.MONGODB_URI || require('./config/database').connectionString;
+const sessionSecret = process.env.SESSION_SECRET || require('./config/auth').sessionSecret;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
