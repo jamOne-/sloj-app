@@ -14,7 +14,7 @@ export default {
   props: ['bills'],
   methods: {
     toggleDeletion(bill) {
-      this.$event.emit('toggleDeletion', bill);
+      this.$emit('toggleDeletion', bill);
     }
   }
 }

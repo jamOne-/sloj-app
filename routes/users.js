@@ -1,7 +1,6 @@
-const express = require('express');
-const ObjectID = require('mongodb').ObjectID;
 const bcrypt = require('bcrypt');
-const router = express.Router();
+const router = require('express').Router();
+const ObjectID = require('mongodb').ObjectID;
 
 const usersRouter = db => {
   const usersCollection = db.collection('users');

@@ -1,6 +1,5 @@
-const express = require('express');
+const router = require('express').Router();
 const ObjectID = require('mongodb').ObjectID;
-const router = express.Router();
 
 const possibleTos = ['Werner', 'Dominik', 'Rafał'];
 const possibleFroms = [...possibleTos, 'Słój'];
@@ -63,7 +62,7 @@ async function insertBill(bills, bill) {
     const deleted = false;
     const creationDate = new Date();
 
-    return await billsCollection.insertOne({ from, to, amount, comment, deleted, creationDate })
+    return await bills.insertOne({ from, to, amount, comment, deleted, creationDate })
       .then(result => result.ops[0]);
   }
 
