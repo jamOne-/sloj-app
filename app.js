@@ -12,10 +12,11 @@ const isLoggedInApi = require('./auth/middlewares').isLoggedInApi;
 const api = require('./api/api');
 const MongoClient = require('mongodb').MongoClient;
 const sessionSecret = require('./config/auth').sessionSecret;
-const connectionString = require('./config/database').connectionString;
+const configConnectionString = require('./config/database').connectionString;
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const connectionString = process.env.MONGODB_URI || configConnectionString;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
