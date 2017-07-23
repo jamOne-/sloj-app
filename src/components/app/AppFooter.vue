@@ -3,7 +3,7 @@
     <div class="container">
       <div class="footer">
         <div class="author">
-          <p>by @jamone</p>
+          <p>by <a href="https://github.com/jamone-">@jamone-</a></p>
         </div>
       </div>
     </div>
@@ -31,5 +31,13 @@ export default {
     justify-content: center;
     align-items: center;
     border-top: 1px solid rgba(0, 0, 0, 0.16);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: inherit;
   }
 </style>

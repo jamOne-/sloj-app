@@ -122,7 +122,6 @@ export default {
     height: 40px;
     padding: 0 10px;
     background-color: #fff;
-    color: white;
     outline: none;
     border: none;
     cursor: pointer;

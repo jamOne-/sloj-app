@@ -13,7 +13,7 @@
     </div>
 
     <div class="history-container">
-       <bill-history :bills="bills"></bill-history> 
+       <bill-history :bills="bills" @toggleDeletion="toggleDeletion($event)"></bill-history> 
     </div>
   </div>
 </template>
@@ -22,6 +22,7 @@
 import SummaryCard from '../SummaryCard.vue';
 import NewBill from '../NewBill.vue';
 import BillHistory from '../BillHistory.vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -31,49 +32,11 @@ export default {
   },
   data() {
     return {
-      bills: [
-        {
-          id: 0,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Werner',
-          to: 'Dominik',
-          amount: 12
-        },
-        {
-          id: 1,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Werner',
-          to: 'Rafał',
-          amount: 17.82
-        },
-        {
-          id: 2,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Dominik',
-          to: 'Rafał',
-          amount: 3
-        },
-        {
-          id: 3,
-          deleted: false,
-          comment: 'Dominik dłużnik',
-          from: 'Dominik',
-          to: 'Rafał',
-          amount: 19.90
-        },
-        {
-          id: 4,
-          deleted: false,
-          comment: 'Dominik dłużnik',
-          from: 'Dominik',
-          to: 'Werner',
-          amount: 10
-        }
-      ]
+      bills: []
     };
+  },
+  async created() {
+    this.bills = await axios.get('/api/bills').then(response => response.data);
   },
   computed: {
     summaries() {
@@ -103,16 +66,14 @@ export default {
     }
   },
   methods: {
-    addBill(bill) {
-      bill.id = this.bills.length;
-      bill.deleted = false;
-      this.bills.unshift(bill);
+    async addBill(bill) {
+      const newBill = await axios.post('/api/bills', bill).then(response => response.data);
+      this.bills.unshift(newBill);
     },
 
     getSummaries() {
       const summaries = {};
-
-      this.bills.forEach(entry => {
+      const calculateEntry = (entry) => {
         summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
         summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
         summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
@@ -122,9 +83,29 @@ export default {
         summaries[entry.from]._sum -= entry.amount;
         summaries[entry.to][entry.from] -= entry.amount;
         summaries[entry.to]._sum += entry.amount;
+      };
+
+      this.bills.forEach(entry => {
+        if (entry.deleted) return;
+
+        const allUsers = ['Werner', 'Dominik', 'Rafał'];
+        const entries = entry.from != 'Słój' ?
+          [entry] :
+          allUsers.map(user => ({
+            from: user,
+            to: entry.to,
+            amount: entry.amount / 3
+          }));
+
+        entries.forEach(calculateEntry);
       });
 
       return summaries;
+    },
+
+    async toggleDeletion(bill) {
+      await axios.put(`/api/bills/${ bill._id }/toggle`);
+      bill.deleted = !bill.deleted;
     }
   }
 }
