@@ -22,6 +22,7 @@
 import SummaryCard from '../SummaryCard.vue';
 import NewBill from '../NewBill.vue';
 import BillHistory from '../BillHistory.vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -31,49 +32,11 @@ export default {
   },
   data() {
     return {
-      bills: [
-        {
-          id: 0,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Werner',
-          to: 'Dominik',
-          amount: 12
-        },
-        {
-          id: 1,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Werner',
-          to: 'Rafał',
-          amount: 17.82
-        },
-        {
-          id: 2,
-          deleted: false,
-          comment: 'Za jakieś duperele',
-          from: 'Dominik',
-          to: 'Rafał',
-          amount: 3
-        },
-        {
-          id: 3,
-          deleted: false,
-          comment: 'Dominik dłużnik',
-          from: 'Dominik',
-          to: 'Rafał',
-          amount: 19.90
-        },
-        {
-          id: 4,
-          deleted: false,
-          comment: 'Dominik dłużnik',
-          from: 'Dominik',
-          to: 'Werner',
-          amount: 10
-        }
-      ]
+      bills: []
     };
+  },
+  async created() {
+    this.bills = await axios.get('/api/bills').then(response => response.data);
   },
   computed: {
     summaries() {
@@ -103,10 +66,9 @@ export default {
     }
   },
   methods: {
-    addBill(bill) {
-      bill.id = this.bills.length;
-      bill.deleted = false;
-      this.bills.unshift(bill);
+    async addBill(bill) {
+      const newBill = await axios.post('/api/bills', bill).then(response => response.data);
+      this.bills.unshift(newBill);
     },
 
     getSummaries() {
@@ -141,8 +103,8 @@ export default {
       return summaries;
     },
 
-    toggleDeletion(bill) {
-      // todo: api call
+    async toggleDeletion(bill) {
+      await axios.put(`/api/bills/${ bill._id }/toggle`);
       bill.deleted = !bill.deleted;
     }
   }

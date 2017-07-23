@@ -1,6 +1,6 @@
 <template>
   <div class="history">
-    <bill-entry v-for="bill of bills" :key="bill.id" :bill="bill" @toggleDeletion="toggleDeletion($event)"></bill-entry>
+    <bill-entry v-for="bill of bills" :key="bill._id" :bill="bill" @toggleDeletion="toggleDeletion($event)"></bill-entry>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
   props: ['bills'],
   methods: {
     toggleDeletion(bill) {
-      this.$event.emit('toggleDeletion', bill);
+      this.$emit('toggleDeletion', bill);
     }
   }
 }
