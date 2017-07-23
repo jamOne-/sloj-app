@@ -5,11 +5,11 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const serveStatic = require('serve-static');
 const passport = require('passport');
+const MongoClient = require('mongodb').MongoClient;
 const setPassportAndGetRouter = require('./auth/passport');
 const isLoggedIn = require('./auth/middlewares').isLoggedIn;
 const isLoggedInApi = require('./auth/middlewares').isLoggedInApi;
 const api = require('./api/api');
-const MongoClient = require('mongodb').MongoClient;
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -25,7 +25,7 @@ MongoClient.connect(connectionString, (err, db) => {
   app.use(session({
     secret: sessionSecret,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new MongoStore({ db })
   }));
 
@@ -33,7 +33,7 @@ MongoClient.connect(connectionString, (err, db) => {
   app.use(passport.session());
 
   app.use(setPassportAndGetRouter(db, passport));
-  app.use('/api', isLoggedInApi, api(db));
+  app.use('/api', /* isLoggedInApi, */api(db));
   
   app.get('/login', function(req, res) {
     res.sendFile(path.join(__dirname + '/dist/login.html'));
