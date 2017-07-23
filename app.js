@@ -1,21 +1,21 @@
 const path = require('path');
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const serveStatic = require('serve-static');
 const passport = require('passport');
+const MongoClient = require('mongodb').MongoClient;
 const setPassportAndGetRouter = require('./auth/passport');
 const isLoggedIn = require('./auth/middlewares').isLoggedIn;
 const isLoggedInApi = require('./auth/middlewares').isLoggedInApi;
 const api = require('./api/api');
-const MongoClient = require('mongodb').MongoClient;
-const sessionSecret = require('./config/auth').sessionSecret;
-const connectionString = require('./config/database').connectionString;
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const connectionString = process.env.MONGODB_URI || require('./config/database').connectionString;
+const sessionSecret = process.env.SESSION_SECRET || require('./config/auth').sessionSecret;
+const secureCookie = process.env.NODE_ENV == 'production';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,8 +26,9 @@ MongoClient.connect(connectionString, (err, db) => {
   app.use(session({
     secret: sessionSecret,
     resave: false,
-    saveUninitialized: true,
-    store: new MongoStore({ db })
+    saveUninitialized: false,
+    store: new MongoStore({ db }),
+    cookie: { secure: secureCookie }
   }));
 
   app.use(passport.initialize());
