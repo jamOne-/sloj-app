@@ -38,8 +38,11 @@ const billsRouter = db => {
 
     try {
       const bill = await billsCollection.findOne({ _id });
-      const updateResult = await billsCollection.updateOne({ _id }, { $set: { deleted: !bill.deleted, toggleAuthor: req.user.name, toggleDate: new Date() }});
-      res.sendStatus(200);
+      const change = { deleted: !bill.deleted, toggleAuthor: req.user.name, toggleDate: new Date() };
+
+      const updateResult = await billsCollection.updateOne({ _id }, { $set: change });
+      const updatedBill = Object.assign({}, bill, change);
+      res.send(updatedBill);
     }
 
     catch (e) {
