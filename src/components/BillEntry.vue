@@ -4,7 +4,7 @@
       <span>{{ bill.from }}</span>
       <span class="arrow">&rarr;</span>
       <span>{{ bill.to }}</span>
-      <span class="entry-date">/21.12.2018/</span>
+      <span class="entry-date">/{{ formatDate(bill.creationDate) }}/</span>
       <span class="amount">{{ formatAmount(bill.amount) }} zł</span>
       <svg class="expand-arrow" fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/><path d="M0-.25h24v24H0z" fill="none"/></svg>
     </div>
@@ -15,10 +15,10 @@
         <p v-if="!bill.comment">brak</p>
 
         <p><strong>Utworzył:</strong></p>
-        <p>Werner, 12.06.2017</p>
+        <p>{{ bill.author }}, {{ formatDate(bill.creationDate) }}</p>
 
-        <p><strong>Zestornował:</strong></p>
-        <p>Rafał, 18.07.2017</p>
+        <p v-if="bill.deleted"><strong>Zestornował:</strong></p>
+        <p v-if="bill.deleted">{{ bill.toggleAuthor }}, {{ formatDate(bill.toggleDate) }}</p>
       </div>
       <div class="buttons">
         <button @click="toggleDeletion()" class="button button-hover">
@@ -45,6 +45,14 @@ export default {
     },
     toggleDeletion() {
       this.$emit('toggleDeletion', this.bill);
+    },
+    formatDate(stringDate) {
+      const date = new Date(stringDate);
+      return date.toLocaleString('pl-pl', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
     }
   },
   computed: {
