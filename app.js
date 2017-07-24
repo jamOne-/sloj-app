@@ -17,7 +17,7 @@ const connectionString = process.env.MONGODB_URI || require('./config/database')
 const sessionSecret = process.env.SESSION_SECRET || require('./config/auth').sessionSecret;
 const secureCookie = process.env.NODE_ENV == 'production';
 
-app.use('trust proxy', 44);
+app.use('trust proxy', 1);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
