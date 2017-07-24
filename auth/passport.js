@@ -72,7 +72,7 @@ function setPassportAndGetRouter(db, passport) {
     router.get('/auth/facebook', passport.authenticate('facebook'));
     router.get('/auth/facebook/callback',
       passport.authenticate('facebook', {
-        successRedirect: '/',
+        successRedirect: '/#',
         failureRedirect: '/login'
       })
     );
