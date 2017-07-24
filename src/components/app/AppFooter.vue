@@ -35,9 +35,7 @@ export default {
 
   a {
     text-decoration: none;
+    color: inherit !important;
   }
 
-  a:visited {
-    color: inherit;
-  }
 </style>

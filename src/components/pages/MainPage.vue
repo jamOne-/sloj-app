@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="summaries">
-      <summary-card v-for="(summary, user) in summaries"
-        :key="user"
-        :user="user"
-        :summary="summary">
+      <summary-card v-for="item in summariesList"
+        :key="item.user"
+        :user="item.user"
+        :summary="item.summary">
       </summary-card>
     </div>
 
@@ -39,6 +39,14 @@ export default {
     this.bills = await axios.get('/api/bills').then(response => response.data);
   },
   computed: {
+    summariesList() {
+      const users = ['Rafał', 'Dominik', 'Werner'];
+      const summaries = this.summaries;
+
+      return users
+        .map(user => ({ user, summary: summaries[user] }))
+        .filter(({ user, summary }) => summary);
+    },
     summaries() {
       const summaries = this.getSummaries();
       const printableSummaries = {};
@@ -104,8 +112,16 @@ export default {
     },
 
     async toggleDeletion(bill) {
-      await axios.put(`/api/bills/${ bill._id }/toggle`);
       bill.deleted = !bill.deleted;
+
+      try {
+        const updatedBill = await axios.put(`/api/bills/${ bill._id }/toggle`).then(response => response.data);
+        Object.assign(bill, updatedBill);
+      }
+
+      catch (e) {
+        bill.deleted = !bill.deleted;
+      }
     }
   }
 }

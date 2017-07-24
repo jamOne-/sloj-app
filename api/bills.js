@@ -21,8 +21,9 @@ const billsRouter = db => {
 
   router.post('/', async function (req, res) {
     try {
-      const bill = await insertBill(billsCollection, req.body);
-      res.send(bill);
+      const bill = Object.assign({}, req.body, { author: req.user.name });
+      const insertedBill = await insertBill(billsCollection, bill);
+      res.send(insertedBill);
     }
 
     catch (e) {
@@ -37,8 +38,11 @@ const billsRouter = db => {
 
     try {
       const bill = await billsCollection.findOne({ _id });
-      const updateResult = await billsCollection.updateOne({ _id }, { $set: { deleted: !bill.deleted }});
-      res.sendStatus(200);
+      const change = { deleted: !bill.deleted, toggleAuthor: req.user.name, toggleDate: new Date() };
+
+      const updateResult = await billsCollection.updateOne({ _id }, { $set: change });
+      const updatedBill = Object.assign({}, bill, change);
+      res.send(updatedBill);
     }
 
     catch (e) {
@@ -56,13 +60,14 @@ async function insertBill(bills, bill) {
   if (possibleFroms.includes(bill.from) &&
       possibleTos.includes(bill.to) &&
       typeof bill.amount == 'number' &&
-      bill.amount > 0
+      bill.amount > 0 &&
+      bill.author
   ) {
-    const { from, to, amount, comment } = bill;
+    const { from, to, amount, comment, author } = bill;
     const deleted = false;
     const creationDate = new Date();
 
-    return await bills.insertOne({ from, to, amount, comment, deleted, creationDate })
+    return await bills.insertOne({ from, to, amount, comment, deleted, creationDate, author })
       .then(result => result.ops[0]);
   }
 
