@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const connectionString = process.env.MONGODB_URI || require('./config/database').connectionString;
 const sessionSecret = process.env.SESSION_SECRET || require('./config/auth').sessionSecret;
-const secureCookie = process.env.NODE_ENV == 'production';
+const secureCookie = false; // process.env.NODE_ENV == 'production';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
