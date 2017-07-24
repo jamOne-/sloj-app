@@ -2,6 +2,7 @@ const bcrpyt = require('bcrypt');
 const router = require('express').Router();
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 function setPassportAndGetRouter(db, passport) {
   const users = db.collection('users');
@@ -40,6 +41,42 @@ function setPassportAndGetRouter(db, passport) {
       failureRedirect: '/login',
     })
   );
+
+  if (process.env.NODE_ENV == 'production') {
+    passport.use(new FacebookStrategy({
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL
+      },
+      async function (accessToken, refreshToken, profile, done) {
+        try {
+          let user = await users.findOne({ facebookId: profile.id });
+
+          if (!user && process.env.FACEBOOK_REGISTRATION != 'true')
+            return done(null, false);
+
+          if (!user)
+            user = await users.insertOne({ name: profile.name.givenName, facebookId: profile.id })
+              .then(result => result.ops[0]);
+
+          return done(null, user);
+        }
+
+        catch (e) {
+          console.error(e);
+          done(e);
+        }
+      }
+    ));
+
+    router.get('/auth/facebook', passport.authenticate('facebook'));
+    router.get('/auth/facebook/callback',
+      passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+      })
+    );
+  }
 
   router.get('/logout', function(req, res) {
     req.logout();
