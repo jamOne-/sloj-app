@@ -115,8 +115,13 @@ export default {
       bill.deleted = !bill.deleted;
 
       try {
+        const newBills = [...this.bills];
+        const billIndex = newBills.indexOf(bill);
+        
         const updatedBill = await axios.put(`/api/bills/${ bill._id }/toggle`).then(response => response.data);
-        Object.assign(bill, updatedBill);
+        newBills.splice(billIndex, 1, updatedBill);
+
+        this.bills = newBills;
       }
 
       catch (e) {
