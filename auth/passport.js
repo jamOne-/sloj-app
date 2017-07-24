@@ -42,41 +42,39 @@ function setPassportAndGetRouter(db, passport) {
     })
   );
 
-  if (process.env.NODE_ENV == 'production') {
-    passport.use(new FacebookStrategy({
-        clientID: process.env.FACEBOOK_APP_ID,
-        clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: process.env.FACEBOOK_CALLBACK_URL
-      },
-      async function (accessToken, refreshToken, profile, done) {
-        try {
-          let user = await users.findOne({ facebookId: profile.id });
+  passport.use(new FacebookStrategy({
+      clientID: process.env.FACEBOOK_APP_ID || require('../config/auth').facebook.clientID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET || require('../config/auth').facebook.clientSecret,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL || require('../config/auth').facebook.callbackURL
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        let user = await users.findOne({ facebookId: profile.id });
 
-          if (!user && process.env.FACEBOOK_REGISTRATION != 'true')
-            return done(null, false);
+        if (!user && process.env.NODE_ENV == 'production' && process.env.FACEBOOK_REGISTRATION != 'true')
+          return done(null, false);
 
-          if (!user)
-            user = await users.insertOne({ name: profile.name.givenName, facebookId: profile.id })
-              .then(result => result.ops[0]);
+        if (!user)
+          user = await users.insertOne({ name: profile.displayName.split(' ')[0], facebookId: profile.id })
+            .then(result => result.ops[0]);
 
-          return done(null, user);
-        }
-
-        catch (e) {
-          console.error(e);
-          done(e);
-        }
+        return done(null, user);
       }
-    ));
 
-    router.get('/auth/facebook', passport.authenticate('facebook'));
-    router.get('/auth/facebook/callback',
-      passport.authenticate('facebook', {
-        successRedirect: '/#',
-        failureRedirect: '/login'
-      })
-    );
-  }
+      catch (e) {
+        console.error(e);
+        done(e);
+      }
+    }
+  ));
+
+  router.get('/auth/facebook', passport.authenticate('facebook'));
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/#',
+      failureRedirect: '/login'
+    })
+  );
 
   router.get('/logout', function(req, res) {
     req.logout();
