@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import AmountInput from './AmountInput.vue';
+import AmountInput from './controls/AmountInput.vue';
 
 export default {
   components: {
