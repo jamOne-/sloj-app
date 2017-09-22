@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const ObjectID = require('mongodb').ObjectID;
-
-const possibleTos = ['Werner', 'Dominik', 'Rafał'];
-const possibleFroms = [...possibleTos, 'Słój'];
+const { possibleTos, possibleFroms } = require('./groups');
+const possibleTosNames = possibleTos.map(group => group.name);
+const possibleFromsNames = possibleFroms.map(group => group.name);
 
 const billsRouter = db => {
   const billsCollection = db.collection('bills');
@@ -57,8 +57,8 @@ const billsRouter = db => {
 module.exports = billsRouter;
 
 async function insertBill(bills, bill) {
-  if (possibleFroms.includes(bill.from) &&
-      possibleTos.includes(bill.to) &&
+  if (possibleFromsNames.includes(bill.from) &&
+      possibleTosNames.includes(bill.to) &&
       typeof bill.amount == 'number' &&
       bill.amount > 0 &&
       bill.author

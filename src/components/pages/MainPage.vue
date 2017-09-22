@@ -9,7 +9,7 @@
     </div>
 
     <div class="new-bill-container">
-       <new-bill @addBill="addBill($event)"></new-bill> 
+       <new-bill @addBill="addBill($event)" :possibleFroms="possibleFroms" :possibleTos="possibleTos"></new-bill> 
     </div>
 
     <div class="history-container">
@@ -32,11 +32,21 @@ export default {
   },
   data() {
     return {
-      bills: []
+      bills: [],
+      possibleFroms: [],
+      possibleTos: [],
+      groups: {}
     };
   },
   async created() {
-    this.bills = await axios.get('/api/bills').then(response => response.data);
+    [this.bills, {
+        possibleFroms: this.possibleFroms,
+        possibleTos: this.possibleTos,
+        groups: this.groups
+    }] = await Promise.all([
+      axios.get('/api/bills').then(response => response.data),
+      axios.get('/api/groups').then(response => response.data)
+    ]);
   },
   computed: {
     summariesList() {
@@ -81,7 +91,7 @@ export default {
 
     getSummaries() {
       const summaries = {};
-      const calculateEntry = (entry) => {
+      const calculateEntry = entry => {
         summaries[entry.from] = summaries[entry.from] || { _sum: 0 };
         summaries[entry.from][entry.to] = summaries[entry.from][entry.to] || 0;
         summaries[entry.to] = summaries[entry.to] || { _sum: 0 };
@@ -96,14 +106,12 @@ export default {
       this.bills.forEach(entry => {
         if (entry.deleted) return;
 
-        const allUsers = ['Werner', 'Dominik', 'Rafał'];
-        const entries = entry.from != 'Słój' ?
-          [entry] :
-          allUsers.map(user => ({
-            from: user,
-            to: entry.to,
-            amount: entry.amount / 3
-          }));
+        const users = this.groups[entry.from].users;
+        const entries = users.map(user => ({
+          from: user,
+          to: entry.to,
+          amount: entry.amount / users.length
+        }));
 
         entries.forEach(calculateEntry);
       });
