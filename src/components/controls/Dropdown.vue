@@ -49,6 +49,7 @@ export default {
 
 .dropdown {
   width: 100%;
+  position: relative;
 }
 
 .dropdown--toggle {
@@ -66,12 +67,13 @@ export default {
   justify-content: space-between;
 }
 
+.dropdown.open .dropdown--toggle,
 .dropdown--toggle:hover {
-  border-color: #2c3e50;
+  box-shadow: 0px 10px 20px 6px rgba(0, 0, 0, .1), 0px 0px 4px rgba(0, 0, 0, .1);
+  border-color: transparent !important;
 }
 
-.dropdown.selected .dropdown--toggle,
-.dropdown.open .dropdown--toggle {
+.dropdown.selected .dropdown--toggle {
   border-bottom-color: #2c3e50;
 }
 
@@ -100,9 +102,11 @@ export default {
 
 .dropdown--options {
   position: absolute;
-  width: 300px;
+  width: 200px;
+  top: 42px;
   z-index: 10;
   background-color: white;
+  box-shadow: 0px 10px 20px 6px rgba(0, 0, 0, .1), 0px 0px 4px rgba(0, 0, 0, .1);
 }
 
 .dropdown--option {
@@ -115,10 +119,6 @@ export default {
   align-items: center;
   cursor: pointer;
   transition: all 300ms ease;
-}
-
-.dropdown--option:last-child {
-  border-bottom: 1px solid #2c3e50;
 }
 
 .dropdown--option:hover {
