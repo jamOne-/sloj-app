@@ -32,8 +32,8 @@ export default {
     return {
       bill: {
         comment: '',
-        from: null,
-        to: null,
+        from: '',
+        to: '',
         amount: ''
       }
     }
@@ -47,7 +47,7 @@ export default {
     saveBill() {
       if (this.isValid) {
         const newBill = Object.assign({}, this.bill, {
-          amount: Number(this.bill.amount),
+          amount: this.string2Number(this.bill.amount),
           from: this.bill.from.name,
           to: this.bill.to.name
         });
@@ -55,12 +55,16 @@ export default {
         this.$emit('addBill', newBill);
         this.resetData();
       }
+    },
+
+    string2Number(string) {
+      return Number(string.replace(/,/g, comma => '.'));
     }
   },
 
   computed: {
     isValid() {
-      return this.bill.from && this.bill.to && this.bill.amount && Number(this.bill.amount);
+      return this.bill.from && this.bill.to && this.bill.amount && this.string2Number(this.bill.amount);
     },
 
     froms() {

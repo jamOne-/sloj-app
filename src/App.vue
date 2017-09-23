@@ -47,4 +47,11 @@ export default {
     height: 100%;
     margin: 0 40px;
   }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s ease-in-out;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 </style>

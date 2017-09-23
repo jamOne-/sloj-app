@@ -1,20 +1,28 @@
 <template>
   <div>
-    <div class="summaries">
-      <summary-card v-for="item in summariesList"
-        :key="item.user"
-        :user="item.user"
-        :summary="item.summary">
-      </summary-card>
+    <div class="loader--container" v-if="busy">
+      <loader></loader>
     </div>
 
-    <div class="new-bill-container">
-       <new-bill @addBill="addBill($event)" :possibleFroms="possibleFroms" :possibleTos="possibleTos"></new-bill> 
-    </div>
+    <transition name="fade">
+      <div v-if="!busy">
+        <div class="summaries">
+          <summary-card v-for="item in summariesList"
+            :key="item.user"
+            :user="item.user"
+            :summary="item.summary">
+          </summary-card>
+        </div>
 
-    <div class="history-container">
-       <bill-history :bills="bills" @toggleDeletion="toggleDeletion($event)"></bill-history> 
-    </div>
+        <div class="new-bill-container">
+          <new-bill @addBill="addBill($event)" :possibleFroms="possibleFroms" :possibleTos="possibleTos"></new-bill> 
+        </div>
+
+        <div class="history-container">
+          <bill-history :bills="bills" @toggleDeletion="toggleDeletion($event)"></bill-history> 
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -22,31 +30,41 @@
 import SummaryCard from '../SummaryCard.vue';
 import NewBill from '../NewBill.vue';
 import BillHistory from '../BillHistory.vue';
+import Loader from '../Loader.vue';
 import axios from 'axios';
 
 export default {
   components: {
     SummaryCard,
     NewBill,
-    BillHistory
+    BillHistory,
+    Loader
   },
   data() {
     return {
       bills: [],
       possibleFroms: [],
       possibleTos: [],
-      groups: {}
+      groups: {},
+      busy: true
     };
   },
   async created() {
+    const delayPromise = delay => new Promise((resolve, reject) => {
+      setTimeout(resolve, delay);
+    });
+
     [this.bills, {
         possibleFroms: this.possibleFroms,
         possibleTos: this.possibleTos,
         groups: this.groups
     }] = await Promise.all([
       axios.get('/api/bills').then(response => response.data),
-      axios.get('/api/groups').then(response => response.data)
+      axios.get('/api/groups').then(response => response.data),
+      delayPromise(500)
     ]);
+    
+    this.busy = false;
   },
   computed: {
     summariesList() {
@@ -142,6 +160,14 @@ export default {
 </script>
 
 <style>
+  .loader--container {
+    width: 100%;
+    height: calc(100vh - 80px - 60px - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .summaries {
     display: flex;
     justify-content: space-between;

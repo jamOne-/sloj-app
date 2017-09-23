@@ -8,9 +8,8 @@
         </div>
 
         <nav>
-          <router-link to="/" class="nav-item">Główna</router-link>
-          <router-link to="/bills" class="nav-item">Rachunki</router-link>
-          <router-link to="/" class="nav-item">Użytkownicy</router-link>
+          <router-link to="/" exact class="nav-item">Główna</router-link>
+          <router-link to="/bills" exact class="nav-item">Rachunki</router-link>
         </nav>
       </div>
     </div>
@@ -71,5 +70,9 @@ export default {
   .nav-item:hover {
     color: #2c3e50;
     border-bottom: 1px solid #2c3e50;
+  }
+
+  .nav-item.router-link-active {
+    color: #2c3e50;
   }
 </style>
