@@ -3,9 +3,9 @@
     <input class="comment-input" type="text" placeholder="Komentarz..." v-model="bill.comment">
 
     <div class="entry">
-      <input type="text" placeholder="Kto" v-model="bill.from" :class="{ filled: bill.from }">
+      <dropdown placeholder="Kto" v-model="bill.from" :options="froms" :class="{ filled: bill.from }"></dropdown>
       <div class="entry-arrow">&rarr;</div>
-      <input type="text" placeholder="Komu" v-model="bill.to" :class="{ filled: bill.to }">
+      <dropdown placeholder="Komu" v-model="bill.to"  :options="tos" :class="{ filled: bill.to }"></dropdown>
       <amount-input placeholder="Ile hajsu" currency="zł" v-model="bill.amount"></amount-input>
     </div>
 
@@ -17,19 +17,23 @@
 </template>
 
 <script>
-import AmountInput from './AmountInput.vue';
+import AmountInput from './controls/AmountInput.vue';
+import Dropdown from './controls/Dropdown.vue';
 
 export default {
   components: {
-    AmountInput
+    AmountInput,
+    Dropdown
   },
+
+  props: ['possibleFroms', 'possibleTos'],
 
   data() {
     return {
       bill: {
         comment: '',
-        from: '',
-        to: '',
+        from: null,
+        to: null,
         amount: ''
       }
     }
@@ -42,9 +46,13 @@ export default {
 
     saveBill() {
       if (this.isValid) {
-        const newBill = Object.assign({}, this.bill, { amount: Number(this.bill.amount) });
-        this.$emit('addBill', newBill);
+        const newBill = Object.assign({}, this.bill, {
+          amount: Number(this.bill.amount),
+          from: this.bill.from.name,
+          to: this.bill.to.name
+        });
 
+        this.$emit('addBill', newBill);
         this.resetData();
       }
     }
@@ -52,7 +60,15 @@ export default {
 
   computed: {
     isValid() {
-      return this.bill.from && this.bill.to && this.bill.amount && Number(this.bill.amount) > 0;
+      return this.bill.from && this.bill.to && this.bill.amount && Number(this.bill.amount);
+    },
+
+    froms() {
+      return this.possibleFroms.map(from => Object.assign({}, from, { id: from.name, text: from.name }));
+    },
+
+    tos() {
+      return this.possibleTos.map(to => Object.assign({}, to, { id: to.name, text: to.name }));
     }
   }
 }
@@ -88,29 +104,8 @@ export default {
     transition: color 400ms ease;
   }
 
-  input {
-    height: 35px;
-    width: 100%;
-    font-family: Roboto;
-    font-size: 20px;
-    font-weight: 300;
-    border: none;
-    border-bottom: 1px solid #e0e0e0;
-    outline: none;
-    transition: all 300ms ease;
-  }
-
-  input:focus,
-  input.filled {
-    border-bottom-color: #2c3e50;
-  }
-
-  input.filled + .entry-arrow {
+  .dropdown.filled + .entry-arrow {
     color: inherit;
-  }
-
-  input::placeholder {
-    color: #cccccc;
   }
 
   .buttons {

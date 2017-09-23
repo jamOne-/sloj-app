@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getTextWidth } from '../helpers';
+import { getTextWidth } from '../../helpers';
 
 export default {
   props: ['placeholder', 'value', 'currency'],
