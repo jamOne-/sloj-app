@@ -36,7 +36,7 @@ MongoClient.connect(connectionString, (err, db) => {
   app.use(passport.session());
 
   app.use(setPassportAndGetRouter(db, passport));
-  app.use('/api', /* isLoggedInApi, */ api(db));
+  app.use('/api', isLoggedInApi, api(db));
   
   app.get('/login', function(req, res) {
     res.sendFile(path.join(__dirname + '/dist/login.html'));

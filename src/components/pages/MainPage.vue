@@ -106,10 +106,11 @@ export default {
       this.bills.forEach(entry => {
         if (entry.deleted) return;
 
+        const to_user = this.groups[entry.to].users[0];
         const users = this.groups[entry.from].users;
-        const entries = users.map(user => ({
-          from: user,
-          to: entry.to,
+        const entries = users.map(from_user => ({
+          from: from_user,
+          to: to_user,
           amount: entry.amount / users.length
         }));
 
