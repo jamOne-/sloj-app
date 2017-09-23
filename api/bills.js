@@ -60,7 +60,6 @@ async function insertBill(bills, bill) {
   if (possibleFromsNames.includes(bill.from) &&
       possibleTosNames.includes(bill.to) &&
       typeof bill.amount == 'number' &&
-      bill.amount > 0 &&
       bill.author
   ) {
     const { from, to, amount, comment, author } = bill;

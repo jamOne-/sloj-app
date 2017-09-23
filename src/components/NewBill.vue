@@ -60,7 +60,7 @@ export default {
 
   computed: {
     isValid() {
-      return this.bill.from && this.bill.to && this.bill.amount && Number(this.bill.amount) > 0;
+      return this.bill.from && this.bill.to && this.bill.amount && Number(this.bill.amount);
     },
 
     froms() {
