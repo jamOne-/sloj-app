@@ -32,8 +32,8 @@ export default {
     return {
       bill: {
         comment: '',
-        from: null,
-        to: null,
+        from: '',
+        to: '',
         amount: ''
       }
     }

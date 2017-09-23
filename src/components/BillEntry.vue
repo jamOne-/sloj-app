@@ -72,7 +72,7 @@ export default {
   .main-content {
     padding: 10px 20px;
     display: grid; 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 40px;
+    grid-template-columns: 1fr 1fr 1.5fr 1fr 1fr 40px;
     grid-column-gap: 10px;  
     align-items: center;
     cursor: pointer;

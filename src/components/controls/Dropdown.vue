@@ -40,13 +40,6 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s ease-in-out;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
 .dropdown {
   width: 100%;
   position: relative;
