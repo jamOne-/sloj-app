@@ -12,7 +12,7 @@
       <div class="additional-content">
         <p><strong>Komentarz:</strong></p>
         <p v-if="bill.comment">{{ bill.comment }}</p>
-        <p v-if="!bill.comment">brak</p>
+        <p v-if="!bill.comment"><i>brak</i></p>
 
         <p><strong>Utworzył:</strong></p>
         <p>{{ bill.author }}, {{ formatDate(bill.creationDate) }}</p>
