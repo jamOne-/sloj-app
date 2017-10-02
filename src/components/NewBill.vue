@@ -91,7 +91,7 @@ export default {
   }
 
   .comment-input:not(:focus) {
-    border-bottom: 2px solid transparent;
+    border-bottom: 1px solid transparent;
   }
 
   .entry {

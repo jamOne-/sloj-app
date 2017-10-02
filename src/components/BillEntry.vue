@@ -66,7 +66,7 @@ export default {
 <style scoped>
   .entry.deleted .main-content {
     text-decoration: line-through;
-    background-color: rgba(0, 0, 0, 0.08);
+    opacity: 0.3;
   }
 
   .main-content {
